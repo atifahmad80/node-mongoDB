@@ -22,6 +22,14 @@ app.post('/todo',(req,res)=>{
 
 })
 
+app.get('/todo',(req,res)=>{
+  toDo.find().then((todoslist)=>{
+    res.send({todoslist});
+  },(e)=>{
+    res.status(400).send(e);
+  })
+})
+
 
 app.listen(3000,()=>{
   console.log('server at 3000');
