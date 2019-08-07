@@ -26,7 +26,7 @@ MongoClient.connect('mongodb://localhost:27017/MyApp',(err,client)=>{
   // })
 
 
-  db.collection('Users').findOneAndDelete({_id:ObjectID("5d4932872bbc4b221cd82717")}).then((res)=>{
+  db.collection('Users').findOneAndDelete({_id:new ObjectID("5d4932872bbc4b221cd82717")}).then((res)=>{
     console.log(res);
   })
 
