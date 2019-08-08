@@ -8,8 +8,6 @@ var {user}=require('./models/user');
 
 const port=process.env.PORT || 3000;
 
-// console.log(process.env.DATABASE_URL.postgres);
-
 
 var app=express();
 app.use(bodyParser.json());
@@ -52,10 +50,27 @@ app.get('/todo/:id',(req,res)=>{
   },(err)=>{
     res.status(400).send();
   })
+})
+
+app.delete('/todo/:id',(req,res)=>{
+  var id=req.params.id;
+  if (!ObjectID.isValid(id)) {
+    return res.status(404).send('invalid id');
+  }
+
+  toDo.findByIdAndRemove(id).then((succ)=>{
+    if(!succ){
+      return res.status(404).send('no data');
+    }
+    res.status(200).send(succ);
+  },(err)=>{
+    res.status(400).send("error")
+  })
 
 
 
 })
+
 
 
 
