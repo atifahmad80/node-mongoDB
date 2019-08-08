@@ -1,14 +1,17 @@
 const expect=require('expect');
 const request=require('supertest');
-
+const {ObjectID}=require('mongodb');
 
 const {app}=require('./../server');
 const {toDo}=require('./../models/ToDo');
 
 const todos=[
-  {text:"first todo"},
-  {text:"second todo"},
-  {text:"third todo"}]
+  {_id:new ObjectID(),
+    text:"first todo"},
+  {_id:new ObjectID(),
+    text:"second todo"},
+  {_id:new ObjectID(),
+    text:"third todo"}]
 
 
 beforeEach((done)=>{
@@ -72,3 +75,32 @@ describe('GET /todo',()=>{
     .end(done);
   })
 })
+
+
+  describe('GET /todo/:id',()=>{
+    it('check id validation',(done)=>{
+      request(app)
+        .get(`/todo/${todos[0]._id.toHexString()}`)
+        .expect(200)
+        .expect((res)=>{
+          expect(res.body.succ.text).toBe(todos[0].text);
+        })
+        .end(done);
+    })
+
+
+    it('id not found',(done)=>{
+      request(app)
+      .get(`/todo/${new ObjectID().toHexString}`)
+      .expect(404)
+      .end(done)
+    })
+
+    it('invalid id',(done)=>{
+      request(app)
+      .get(`/todo/123`)
+      .expect(404)
+      .end(done)
+    })
+
+  })
