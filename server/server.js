@@ -62,7 +62,7 @@ app.delete('/todo/:id',(req,res)=>{
     if(!succ){
       return res.status(404).send('no data');
     }
-    res.status(200).send(succ);
+    res.status(200).send({succ});
   },(err)=>{
     res.status(400).send("error")
   })
